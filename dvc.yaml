@@ -3,6 +3,8 @@ stages:
     cmd: python src/data/data_collection.py
     deps:
     - src/data/data_collection.py
+    params:
+    - data_collection.test_size
     outs:
     - data/raw
   data_transformation:
@@ -12,3 +14,19 @@ stages:
     - src/data/data_transformation.py
     outs:
     - data/processed
+  model_building:
+    cmd: python src/model/model_building.py
+    deps:
+    - data/processed
+    - src/model/model_building.py
+    params:
+    - model_building.n_estimators
+    outs:
+    - models/model.pkl
+  model_evaluation:
+    cmd: python src/model/model_evaluation.py
+    deps:
+    - models/model.pkl
+    - src/model/model_evaluation.py
+    metrics:
+    - reports/metrics.json
