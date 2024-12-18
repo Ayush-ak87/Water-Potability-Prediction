@@ -1,0 +1,14 @@
+stages:
+  data_collection:
+    cmd: python src/data/data_collection.py
+    deps:
+    - src/data/data_collection.py
+    outs:
+    - data/raw
+  data_transformation:
+    cmd: python src/data/data_transformation.py
+    deps:
+    - data/raw
+    - src/data/data_transformation.py
+    outs:
+    - data/processed
