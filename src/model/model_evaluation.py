@@ -2,9 +2,21 @@ import numpy as np
 import pandas as pd
 import pickle
 import json
+import mlflow
+import seaborn as sns
+import matplotlib.pyplot as plt
 from dvclive import Live
 import yaml
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+import dagshub
+import mlflow.sklearn
+from mlflow import log_metric, log_param, log_artifact
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+from mlflow.models import infer_signature
+
+# Initialize DagsHub for experiment tracking
+dagshub.init(repo_owner='Ayush-ak87', repo_name='Water-Quality-Prediction', mlflow=True)
+mlflow.set_experiment("Final Model ")
+mlflow.set_tracking_uri("https://dagshub.com/Ayush-ak87/Water-Quality-Prediction.mlflow")
 
 def load_data(filepath: str) -> pd.DataFrame:
     try:
@@ -40,21 +52,37 @@ def evaluation_model(model, x_test: pd.DataFrame, y_test: pd.Series) -> dict:
         params = yaml.safe_load(open("params.yaml","r"))
         test_size = params["data_collection"]["test_size"]
         n_estimators = params["model_building"]["n_estimators"]
+
         y_pred = model.predict(x_test)
 
+        # Calculate Metrics
         acc = accuracy_score(y_test,y_pred)
         precision = precision_score(y_test,y_pred)
         recall  =recall_score(y_test,y_pred)
         f1 = f1_score(y_test,y_pred)
 
-        with Live(save_dvc_exp=True) as live:
-            live.log_metric("accuracy",acc)
-            live.log_metric("precision",precision)
-            live.log_metric("recall",recall)
-            live.log_metric("f1_score",f1)
+        # Log Params to MLFlow
+        mlflow.log_param("Test_size",test_size)
+        mlflow.log_param("n_estimators",n_estimators)
 
-            live.log_param("test_size",test_size)
-            live.log_param("n_estimators",n_estimators)
+        # Log metrics
+        mlflow.log_metric("accuracy", acc)
+        mlflow.log_metric("precision", precision)
+        mlflow.log_metric("recall", recall)
+        mlflow.log_metric("f1_score", f1)
+
+        # Confusion matrix
+        cm = confusion_matrix(y_test, y_pred)
+        plt.figure(figsize=(5, 5))
+        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+        plt.xlabel("Predicted")
+        plt.ylabel("Actual")
+        plt.title(f"Confusion Matrix Plot")
+        cm_path = f"confusion_matrix.png"
+        plt.savefig(cm_path)
+
+        # Log confusion matrix artifact
+        mlflow.log_artifact(cm_path)
 
         metrics_dict = {
 
@@ -83,8 +111,29 @@ def main():
         test_data = load_data(test_data_path)
         x_test,y_test = prepare_data(test_data)
         model = load_model(model_path)
-        metrics = evaluation_model(model, x_test, y_test)
-        save_metrics(metrics,metrics_path)
+
+        # Start MLflow run
+        with mlflow.start_run() as run:
+            metrics = evaluation_model(model, x_test, y_test)
+            save_metrics(metrics,metrics_path)
+
+            # Log artifacts
+            mlflow.log_artifact(model_path)
+            mlflow.log_artifact(metrics_path)
+            
+            # Log the source code file
+            mlflow.log_artifact(__file__)
+
+            signature = infer_signature(x_test,model.predict(x_test))
+
+            mlflow.sklearn.log_model(model,"Best Model",signature=signature)
+
+            #Save run ID and model info to JSON File
+            run_info = {'run_id': run.info.run_id, 'model_name': "Best Model"}
+            reports_path = "reports/run_info.json"
+            with open(reports_path, 'w') as file:
+                json.dump(run_info, file, indent=4)
+
     except Exception as e:
         raise Exception(f"An Error ocuured: {e}")
     
