@@ -13,9 +13,11 @@ os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
 os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
 
 # Initialize DagsHub for experiment tracking
-dagshub.init(repo_owner='Ayush-ak87', repo_name='Water-Quality-Prediction', mlflow=True)
+dagshub_url = "https://dagshub.com"
+repo_owner='Ayush-ak87' 
+repo_name='Water-Quality-Prediction'
 mlflow.set_experiment("Final Model ")
-mlflow.set_tracking_uri("https://dagshub.com/Ayush-ak87/Water-Quality-Prediction.mlflow")
+mlflow.set_tracking_uri(f"{dagshub_url}/{repo_owner}/{repo_name}.mlflow")
 
 # Load the run ID and model name from the saved JSON file
 reports_path = "reports/run_info.json"
