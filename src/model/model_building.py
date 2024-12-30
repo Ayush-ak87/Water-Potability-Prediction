@@ -45,12 +45,12 @@ def train_model(x: pd.DataFrame, y: pd.Series, n_estimators: int) -> RandomFores
     except Exception as e:
         raise Exception(f"Error Training Model: {e}")
     
-def save_model(model: RandomForestClassifier, filepath: str) -> None:
+def save_model(model: RandomForestClassifier, model_name: str) -> None:
     try:
-        with open(filepath,"wb") as file:
+        with open(model_name,"wb") as file:
             pickle.dump(model,file)
     except Exception as e:
-        raise Exception(f"Error saving model to {filepath}: {e}")
+        raise Exception(f"Error saving model to {model_name}: {e}")
 
 # pickle.dump(model,open("model.pkl","wb"))
 
