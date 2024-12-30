@@ -15,11 +15,11 @@ def load_params(params_path: str) -> int:
 
 # n_estimators = yaml.safe_load(open("params.yaml","r"))["model_building"]["n_estimators"]
 
-def load_data(filepath: str) -> pd.DataFrame:
+def load_data(data_path: str) -> pd.DataFrame:
     try:
-        return pd.read_csv(filepath)
+        return pd.read_csv(data_path)
     except Exception as e:
-        raise Exception(f"Error Loading data from {filepath}: {e}")
+        raise Exception(f"Error Loading data from {data_path}: {e}")
 
 # train_data = pd.read_csv("./data/processed/train_processed.csv")
 
