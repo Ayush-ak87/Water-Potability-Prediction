@@ -8,10 +8,19 @@ import matplotlib.pyplot as plt
 from dvclive import Live
 import yaml
 import dagshub
+import os
 import mlflow.sklearn
 from mlflow import log_metric, log_param, log_artifact
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 from mlflow.models import infer_signature
+
+#Load DagsHub Token from the environment variables
+dagshub_token = os.getenv("DAGSHUB_TOKEN")
+if not dagshub_token:
+    raise EnvironmentError("DAGSHUB_TOKEN environment variable is not set")
+
+os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
+os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
 
 # Initialize DagsHub for experiment tracking
 dagshub.init(repo_owner='Ayush-ak87', repo_name='Water-Quality-Prediction', mlflow=True)
