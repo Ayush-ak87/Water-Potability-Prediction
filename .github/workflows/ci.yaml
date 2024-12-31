@@ -30,7 +30,7 @@ jobs:
       - name: Configure DVC Remote Authentication
         run: |
           dvc remote modify myremote --local auth basic
-          dvc remote modify myremote --local user $DAGSHUB_TOKEN
+          dvc remote modify myremote --local user Ayush-ak87
           dvc remote modify myremote --local password $DAGSHUB_TOKEN
 
       - name: Run DVC Pipeline
@@ -38,3 +38,4 @@ jobs:
           DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
         run: |
           dvc repro
+
