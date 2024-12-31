@@ -1,6 +1,6 @@
 [core]
     remote = myremote
-['remote "myremote"']
-    url = https://dagshub.com/Ayush-ak87/Water-Quality-Prediction.dvc
-['remote "origin"']
-    url = https://dagshub.com/Ayush-ak87/Water-Quality-Prediction.dvc
+# ['remote "myremote"']
+#     url = https://dagshub.com/Ayush-ak87/Water-Quality-Prediction.dvc
+# ['remote "origin"']
+#     url = https://dagshub.com/Ayush-ak87/Water-Quality-Prediction.dvc
