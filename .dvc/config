@@ -1,4 +1,2 @@
-[core]
-    remote = myremote
 ['remote "myremote"']
-    url = C:\Users\HP\AppData\Local\Temp
+    url = https://dagshub.com/Ayush-ak87/Water-Quality-Prediction.dvc
