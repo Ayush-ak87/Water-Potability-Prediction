@@ -24,7 +24,7 @@ jobs:
         env:
           DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
         run: |
-          dvc remote modify myremote --local user "Ayush-ak87"
+          dvc remote modify myremote --local user "$DAGSHUB_TOKEN"
           dvc remote modify myremote --local password "$DAGSHUB_TOKEN"
           dvc push -r myremote
           dvc repro
