@@ -22,9 +22,14 @@ jobs:
 
       - name: Run DVC Pipeline
         env:
-          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}  # Pass secret here
         run: |
+          # Set the DVC remote configuration with the token
           dvc remote modify myremote --local user "$DAGSHUB_TOKEN"
           dvc remote modify myremote --local password "$DAGSHUB_TOKEN"
-          dvc push -r myremote
+
+          # Run the DVC pipeline (re-run the stages)
           dvc repro
+
+          # Now you can push/pull with DVC
+          dvc push -r myremote
