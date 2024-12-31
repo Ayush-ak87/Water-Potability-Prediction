@@ -28,11 +28,10 @@ jobs:
           echo "https://$DAGSHUB_TOKEN@dagshub.com" > ~/.git-credentials
 
       - name: Configure DVC Remote Authentication
-         env:
-          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
         run: |
-          dvc remote modify myremote --local user $DAGSHUB_TOKEN
-          dvc remote modify myremote --local password $DAGSHUB_TOKEN
+          dvc remote modify origin --local auth basic
+          dvc remote modify origin --local user $DAGSHUB_TOKEN
+          dvc remote modify origin --local password $DAGSHUB_TOKEN
 
       - name: Run DVC Pipeline
         env:
