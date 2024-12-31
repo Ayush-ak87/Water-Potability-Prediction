@@ -8,6 +8,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false  # Disable default GitHub token
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -20,21 +22,43 @@ jobs:
           pip install -r requirements.txt
           pip install dvc
 
-      - name: Configure Git Authentication
+      - name: Configure Git with DagsHub Token
+        env:
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git config --global credential.helper store
           echo "https://$DAGSHUB_TOKEN@dagshub.com" > ~/.git-credentials
 
-      - name: Configure DVC Remote Authentication
+      - name: Configure DVC Remote with DagsHub Token
+        env:
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
         run: |
           dvc remote modify myremote --local auth basic
           dvc remote modify myremote --local user $DAGSHUB_TOKEN
           dvc remote modify myremote --local password $DAGSHUB_TOKEN
 
+      - name: Verify Configuration (Optional - Remove After Debugging)
+        run: |
+          git remote -v
+          dvc remote list
+          # echo "DAGSHUB_TOKEN is set: $DAGSHUB_TOKEN"  # Uncomment temporarily for debugging
+        env:
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+
       - name: Run DVC Pipeline
         env:
           DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
         run: |
+          dvc pull
           dvc repro
+          dvc push
+
+      - name: Commit and Push Changes (if any)
+        env:
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+        run: |
+          git add .
+          git commit -m "CI: Update DVC pipeline outputs" || echo "No changes to commit"
+          git push origin HEAD:${{ github.ref }}
