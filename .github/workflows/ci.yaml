@@ -33,3 +33,9 @@ jobs:
 
           # Now you can push/pull with DVC
           dvc push -r myremote
+
+      - name: Run model tests
+        env:
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+        run: |
+          python -m unittest tests/model_test.py
