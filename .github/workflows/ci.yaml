@@ -31,9 +31,6 @@ jobs:
           # Run the DVC pipeline (re-run the stages)
           dvc repro
 
-          # Now you can push/pull with DVC
-          dvc push -r myremote
-
       - name: Run model tests
         env:
           DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
