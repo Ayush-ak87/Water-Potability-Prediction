@@ -2,88 +2,106 @@
 
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-blue)](https://github.com/Ayush-ak87/Water-Quality-Prediction.git)
 
-## Overview
-This project demonstrates a complete **MLOps workflow** for predicting water potability based on water quality metrics. It combines cutting-edge tools and methodologies like **MLflow**, **DVC**, **FastAPI**, and **Docker** to create a robust, scalable, and automated pipeline for machine learning model development, deployment, and monitoring.
+## Project Overview
 
-The project also includes a **Tkinter-based desktop application** and a **FastAPI-based web interface** for user-friendly predictions.
+This project develops an End-to-End MLOps Workflow for predicting water potability based on water quality metrics. It integrates multiple tools and technologies, ensuring a structured and efficient machine learning lifecycle. Key highlights include Experiment Tracking with MLflow, Data Versioning with DVC, CI/CD Pipelines with GitHub Actions, and Model Containerization with Docker. The project also includes both a **Tkinter-based desktop application** and a **FastAPI-based UI** for user-friendly predictions.
 
-## Objectives
-- **Predict water potability**: Develop an ML model that classifies water as potable or non-potable based on its quality metrics.
-- **Streamline the MLOps process**: Utilize modern tools for experiment tracking, data versioning, continuous integration, and deployment.
-- **Deliver practical usability**: Provide both desktop and web-based applications for real-world utility.
+---
+
+## Objective
+- **Predict Water Potability**: Develop an ML model to classify water as potable or non-potable using quality metrics.
+- **Build a robust MLOps pipeline**: Automate data processing, model training, and deployment while ensuring reproducibility and scalability.
+- **Deliver user-friendly applications**: Provide desktop and web-based solutions for real-world usability.
 
 ---
 
 ## Features
-- **End-to-End MLOps Workflow**:
-  - Experiment tracking with **MLflow** and **DagsHub**.
-  - Data versioning using **DVC**.
-  - Continuous Integration (CI) with **GitHub Actions**.
-  - Model containerization and deployment using **Docker**.
-- **Interactive Applications**:
-  - A desktop application built with **Tkinter**.
-  - A web-based application developed using **FastAPI**.
-- **Robust ML Pipeline**:
-  - Data preprocessing and feature engineering.
-  - Hyperparameter tuning for optimal performance.
-  - Model registry for streamlined deployment.
+
+1. **Comprehensive MLOps Workflow**:
+   - Experiment tracking with **MLflow**.
+   - Data versioning and pipeline automation using **DVC**.
+   - Continuous Integration and Deployment (CI/CD) with **GitHub Actions**.
+   - Model containerization using **Docker**.
+
+2. **Interactive Applications**:
+   - A **Tkinter desktop app** for offline predictions.
+   - A **FastAPI-based web interface** for modern, scalable predictions.
+
+3. **Optimized Machine Learning Model**:
+   - Extensive experimentation to identify the best model and preprocessing strategies.
+   - Hyperparameter tuning for optimal performance.
+
+4. **Proof of Concept**:
+   - Developed as an individual project to showcase end-to-end MLOps capabilities.
+   - Overcame significant challenges and gained a deep understanding of concepts over a month-long development period.
 
 ---
 
-## Project Workflow
+## Workflow
 
-### 1. **Setup**
-- Utilize a pre-configured **Cookiecutter template** to set up a structured project directory.
-- Initialize version control with Git and push the repository to GitHub.
+### 1. Data Sourcing and Understanding
+- **Dataset**: Sourced from Kaggle, containing water quality metrics like pH, Hardness, Solids, etc., with labels indicating potability.
+- Performed Exploratory Data Analysis (EDA) to understand feature distributions and relationships.
 
-### 2. **Experiment Tracking**
-- Use **MLflow** integrated with **DagsHub** for experiment logging and artifact tracking.
-- Experimentation:
+### 2. Experimentation
+- Conducted **5 experiments**:
   - **Baseline Model**: Random Forest with default parameters.
-  - **Advanced Models**: Logistic Regression, XGBoost.
-  - **Imputation Testing**: Comparison of mean vs. median strategies for missing values.
-  - **Hyperparameter Tuning**: Optimize Random Forest for best performance.
+  - **Model Comparisons**: Evaluated Logistic Regression, XGBoost, Random Forest, Decision Tree, Support Vector Machine(SVM).
+  - **Imputation Strategies**: Tested mean vs. median imputation for handling missing values.
+  - **Hyperparameter Tuning**: Fine-tuned Random Forest with mean imputation for `n_estimators=1000` and `max_depth=None`.
 
-### 3. **DVC Pipeline**
-- Implement a robust pipeline with the following stages:
-  - **Data Collection**: Organize and load data.
-  - **Data Preprocessing**: Impute missing values and transform features.
-  - **Model Training**: Train and evaluate models using cross-validation.
-  - **Pipeline Execution**: Automate the workflow using DVC.
+### 3. MLOps Implementation
+- **MLflow for Experiment Tracking**:
+  - Logged model metrics (Accuracy, Precision, Recall, F1-Score) and parameters.
+  - Tracked artifacts and registered the best-performing model.
 
-### 4. **Model Registration**
-- Register the best-performing model in the **MLflow Model Registry**.
-- Include metadata and performance metrics for easy tracking and retrieval.
+- **DVC for Data Versioning**:
+  - Versioned raw, processed, and intermediate datasets.
+  - Automated data collection, data preprocessing, model building, model evaluation and model registration pipelines.
 
-### 5. **Applications**
-- **Desktop Application**:
-  - Built using **Tkinter**.
-  - Fetches the latest registered model from MLflow.
-  - Allows users to input water quality metrics and get predictions.
-- **Web Application**:
-  - Developed using **FastAPI** for a modern, interactive user interface.
-  - Supports real-time predictions via a **FastAPI**.
+- **GitHub Actions for CI/CD**:
+  - Automated pipeline execution, model testing, and Docker image deployment.
 
-### 6. **Continuous Integration (CI) Pipeline**
-- Automate the following steps using **GitHub Actions**:
-  - Install dependencies and run the DVC pipeline.
-  - Test the model and promote it to production.
-  - Build a Docker image and push it to DockerHub.
+- **Docker for Containerization**:
+  - Built a Docker image for the application.
+  - Pushed the image to DockerHub for easy deployment.
 
-### 7. **Dockerization**
-- Containerize the entire application with **Docker** for portability and ease of deployment.
-- Publish the Docker image to DockerHub for reuse and scalability.
+### 4. Applications
+- **Tkinter Desktop App**:
+  - A simple, user-friendly GUI for offline predictions.
+  - Automatically fetches the latest registered model from MLflow.
+
+- **FastAPI Web App**:
+  - Modern web interface for real-time predictions.
+  - Deployed locally with the option to scale to cloud platforms in the future.
 
 ---
 
-## Results and Analysis
+## Challenges Faced
+- Handling missing data and testing different imputation strategies.
+- Understanding and implementing advanced MLOps tools like MLflow and DVC.
+- Ensuring a modular and maintainable codebase with proper exception handling.
+- Completing the project within a month while deeply learning all relevant concepts.
+
+---
+
+## Results and Key Insights
 - **Best Model**: Random Forest with mean imputation.
 - **Optimal Hyperparameters**: `n_estimators=1000`, `max_depth=None`.
-- **Performance Metrics**: Achieved high accuracy and F1-score on validation data.
+- **Performance Metrics**:
+  - Accuracy: Achieved high accuracy on validation data.
+  - Precision, Recall, and F1-Score tracked and optimized for balanced performance.
 
 ---
 
-## Installation & Setup
+## Installation & Usage
+
+### Prerequisites
+- Python 3.9+
+- Git and DVC
+- Docker (optional, for containerized deployment)
+
+### Steps
 1. Clone the repository:
    ```bash
    git clone https://github.com/Ayush-ak87/Water-Quality-Prediction.git
@@ -92,34 +110,35 @@ The project also includes a **Tkinter-based desktop application** and a **FastAP
    ```bash
    cd Water-Quality-Prediction
    ```
-3. Install the dependencies:
+3. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-4. Run the pipeline:
+4. Run the DVC pipeline:
    ```bash
    dvc repro
+   ```
+5. Launch the Tkinter app:
+   ```bash
+   python src/app/tkinter_app.py
+   ```
+6. Start the FastAPI server:
+   ```bash
+   uvicorn src.app.fastapi_app:app --reload
    ```
 
 ---
 
-## Usage
-- **Desktop Application**:
-  Run the Tkinter app:
-  ```bash
-  python src/app/tkinter_app.py
-  ```
-- **Web Application**:
-  Start the FastAPI server:
-  ```bash
-  uvicorn src.app.fastapi_app:app --reload
-  ```
-  Access the API at `http://localhost:8000`.
+## Future Improvements
+- Deploy the FastAPI app on a cloud platform like AWS, Azure, or GCP.
+- Add real-time data fetching and processing capabilities.
+- Incorporate advanced monitoring tools for model performance in production.
+- Enhance the UI/UX of the applications.
 
 ---
 
 ## Contributions
-Contributions are welcome! Submit issues or pull requests to improve the project.
+This project is an individual effort, but contributions are welcome! Feel free to open issues or submit pull requests to improve the repository.
 
 ---
 
@@ -127,3 +146,9 @@ Contributions are welcome! Submit issues or pull requests to improve the project
 This project is licensed under the [MIT License](LICENSE).
 
 ---
+
+## Acknowledgments
+
+- **Kaggle**: For providing the dataset used in this project.
+- **DataThinkers YouTube Channel**: For the tutorial videos that guided the development of this project and provided insights into implementing MLOps workflows.
+- **Open-Source Tools and Libraries**: Gratitude to the developers of MLflow, DVC, Docker, FastAPI, and other tools that made this project possible.
